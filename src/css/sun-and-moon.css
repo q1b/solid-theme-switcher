@@ -1,0 +1,92 @@
+/* @import "https://unpkg.com/open-props/easings.min.css"; */
+
+  /* ease-in-cubic 
+  transition-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+   --ease-out-5 
+  transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+   --ease-out-4 
+  transition-timing-function: cubic-bezier(0.39, 0.575, 0.565, 1);
+  */
+
+.sun-and-moon {
+  --ease-in-backshot: cubic-bezier(0.6, -0.28, 0.735, 0.45);
+  --ease-out-5:cubic-bezier(0.25, 0.46, 0.45, 1);
+  
+  & > :is(.moon, .sun, .sun-beams) {
+    transform-origin: center center;
+  }
+  
+  & > :is(.moon, .sun) {
+    fill: var(--icon-fill);
+    @nest .theme-toggle:is(:hover, :focus-visible) > & {
+      fill: var(--icon-fill-hover);
+    }
+  }
+
+  & > .sun-beams {
+    stroke: var(--icon-fill);
+    stroke-width: 2px;
+
+    @nest .theme-toggle:is(:hover, :focus-visible) & {
+      stroke: var(--icon-fill-hover);
+    }
+  }
+
+  @nest .dark & {
+    & > .sun {
+      transform: scale(1.75);
+    }
+
+    & > .sun-beams {
+      opacity: 0;
+    }
+
+    & > .moon > circle {
+      transform: translateX(-7px);
+
+      @supports (cx: 1) {
+        transform: translateX(0);
+        cx: 17;
+      }
+    }
+  }
+
+  @media (--motionOK) {
+    & > .sun {
+      transition: transform .5s var(--ease-elastic-3,cubic-bezier(0.39, 0.575, 0.565, 1));
+    }
+
+    & > .sun-beams {
+      transition: 
+        transform .5s var(--ease-elastic-4,var(--ease-in-backshot)),
+        opacity .5s var(--ease-3,var(--ease-in-backshot))
+      ;
+    }
+
+    & .moon > circle {
+      transition: transform .25s var(--ease-out-5,cubic-bezier(0.39, 0.575, 0.565, 1));
+
+      @supports (cx: 1) {
+        transition: cx .25s var(--ease-out-5,cubic-bezier(0.39, 0.575, 0.565, 1));
+      }
+    }
+
+    @nest .dark & {
+      & > .sun {
+        transform: scale(1.75);
+        transition-timing-function: var(--ease-3,cubic-bezier(0.39, 0.575, 0.565, 1));
+        transition-duration: .25s;
+      }
+
+      & > .sun-beams {
+        transform: rotateZ(-25deg);
+        transition-duration: .15s;
+      }
+
+      & > .moon > circle {
+        transition-delay: .25s;
+        transition-duration: .5s;
+      }
+    }
+  }
+}
